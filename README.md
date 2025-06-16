@@ -1,10 +1,10 @@
-# 📋 Sistema de Cadastro Digital – Space Wellness (v0.3)
+```# 📋 Sistema de Cadastro Digital – Space Wellness (v0.3)```
 
 Sistema acadêmico desenvolvido para informatizar o processo de **cadastro de clientes** da clínica fictícia *SPA Space Wellness*, substituindo fichas de papel por uma aplicação Java integrada a banco de dados.
 
 ---
 
-## 👥 Integrantes
+```## 👥 Integrantes```
 
 - **João Pedro Ferreira Queiroz**  
   RA: 972515409  
@@ -16,7 +16,7 @@ Sistema acadêmico desenvolvido para informatizar o processo de **cadastro de cl
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+```## 🚀 Tecnologias Utilizadas```
 
 - **Linguagem:** Java (versão 17+ recomendada)
 - **GUI:** Swing (interface gráfica com `JFrame`)
@@ -31,6 +31,7 @@ Sistema acadêmico desenvolvido para informatizar o processo de **cadastro de cl
 
 ```## 📂 Estrutura de Arquivos```
 
+```
 src/
 └── com/
 └── seuprojeto/
@@ -41,11 +42,11 @@ src/
 ├── Main.java # Classe principal com interface Swing
 ├── TesteConexao.java # Teste simples da conexão JDBC
 └── ValidadorInput.java # Validação de entradas do usuário
-
+```
 
 ---
 
-## ✅ Funcionalidades
+```## ✅ Funcionalidades```
 
 - [x] Cadastrar clientes
 - [x] Editar dados do cliente (por **ID**)
@@ -57,7 +58,7 @@ src/
 
 ---
 
-## ⚙️ Pré-requisitos
+```## ⚙️ Pré-requisitos```
 
 - Java JDK 17+
 - MySQL Server
@@ -66,7 +67,7 @@ src/
 
 ---
 
-## 🧪 Como Executar
+```## 🧪 Como Executar```
 
 1. Clone o projeto:
 ```bash
@@ -87,13 +88,13 @@ CREATE TABLE clientes (
     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-📄 Licença
+```📄 Licença```
 Projeto com finalidade exclusivamente acadêmica.
 
-👨‍🏫 Professores e Avaliadores
+```👨‍🏫 Professores e Avaliadores```
 Este projeto foi desenvolvido como parte da disciplina de Programação Orientada a Objetos e visa aplicar conceitos de modelagem, persistência de dados e interface gráfica.
 
-📁 Extras incluídos
+```📁 Extras incluídos```
 schema.sql com a criação da tabela
 Diagramas UML de classes e casos de uso
 Wireframes

@@ -39,8 +39,6 @@ public class Main {
             opt = input.nextInt();
             input.nextLine();
 
-        input.close();
-
             switch (opt) {
                 case 1 -> {
                     try {

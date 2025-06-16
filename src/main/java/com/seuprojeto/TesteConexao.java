@@ -1,6 +1,7 @@
 package com.seuprojeto;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class TesteConexao {
     public static void testarConexao() {
@@ -15,5 +16,9 @@ public class TesteConexao {
         } catch (SQLException e) {
             System.out.println("Erro ao conectar: " + e.getMessage());
         }
+    }
+
+    public static void main(String[] args) {
+        testarConexao();
     }
 }

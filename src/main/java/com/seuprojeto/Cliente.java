@@ -10,6 +10,17 @@ public class Cliente {
     private String email;
     private String telefone;
 
+    public Cliente() {
+    }
+
+    public Cliente(String nomeCompleto, String cpf, Date dataNascimento, String email, String telefone) {
+        this.nomeCompleto = nomeCompleto;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.email = email;
+        this.telefone = telefone;
+    }
+
     // Getters e setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

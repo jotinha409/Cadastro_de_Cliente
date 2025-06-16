@@ -1,88 +1,87 @@
 package com.seuprojeto;
 
-import java.util.*;
-import java.sql.Date;
+import java.util.Scanner;
+import java.util.List;
 
 public class Main {
+
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_BLUE = "\u001B[34m";
+    private static final String ANSI_PURPLE = "\u001B[35m";
+    private static final String ANSI_CYAN = "\u001B[36m";
+    private static final String ANSI_ORANGE = "\u001B[38;5;208m";
+
     public static void main(String[] args) {
-        Scanner input = new Scanner (System.in);
+        Scanner input = new Scanner(System.in);
         ClienteDAO dao = new ClienteDAO();
+        ClienteService clienteService = new ClienteService(dao);
+
         int opt;
 
         do {
+            System.out.println(ANSI_PURPLE + "BEM-VINDO AO MENU INTERATIVO" + ANSI_RESET);
 
-            System.out.println("\n ---- BEM VINDO AO MENU INTERATIVO ----\n");
+            System.out.println(ANSI_ORANGE + " \n SPA SPACE WELLNESS " + ANSI_RESET);
 
-            System.out.println("\t1. Cadastrar Cliente");
-            System.out.println("\t2. Remover Cliente");
-            System.out.println("\t3. Atualizar Cliente");
-            System.out.println("\t4. Listar Clientes");
-            System.out.println("\t5. Sair");
-            System.out.println("\t6. Testar conexão");
+            System.out.println();
+            System.out.println(ANSI_GREEN + "\t1. Cadastrar Cliente" + ANSI_RESET);
+            System.out.println(ANSI_RED + "\t2. Remover Cliente" + ANSI_RESET);
+            System.out.println(ANSI_BLUE + "\t3. Atualizar Cliente" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "\t4. Listar Clientes" + ANSI_RESET);
+            System.out.println(ANSI_PURPLE + "\t5. Sair" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + "\t6. Testar conexão" + ANSI_RESET);
 
-            System.out.println("\n\tSELECIONE UMA OPÇÃO\n");
+            System.out.println(ANSI_ORANGE + "\n\tSELECIONE UMA OPÇÃO:\n" + ANSI_RESET);
 
             opt = input.nextInt();
             input.nextLine();
 
-            switch (opt){
-                case 1 -> {
-                    Cliente c = lerCliente(input);
-                    System.out.println(
-                            dao.cadastrarCliente(c)
-                                    ? "✔ Cliente cadastrado com sucesso!"
-                                    : "✖ Falha ao cadastrar cliente."
-                    );
-                }
+        input.close();
 
-                case 2 -> {  // Remover
-                    System.out.print("Digite o ID do cliente a remover: ");
-                    int idRem = input.nextInt();
-                    input.nextLine();
-                    System.out.println(
-                            dao.removerCliente(idRem)
-                                    ? "✔ Cliente removido."
-                                    : "✖ Falha ao remover cliente."
-                    );
+            switch (opt) {
+                case 1 -> {
+                    try {
+                        boolean sucesso = clienteService.cadastrarCliente(lerCliente(input, dao));
+                        if (sucesso) {
+                            System.out.println("✔ Cliente cadastrado com sucesso!");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("✖ Erro: " + e.getMessage());
+                    }
                 }
-                case 3 -> {  // Atualizar
+                case 2 -> dao.removerClienteInterativo(input);
+                case 3 -> {
+                    List<Cliente> todos = dao.listarClientes();
+                    dao.imprimirClientes(todos);
                     System.out.print("Digite o ID do cliente a atualizar: ");
-                    int id = input.nextInt();
+                    int idUpd = input.nextInt();
                     input.nextLine();
-                    Cliente cUpd = lerCliente(input);
-                    cUpd.setId(id);
-                    System.out.println(
-                            dao.atualizarCliente(cUpd)
-                                    ? "✔ Cliente atualizado."
-                                    : "✖ Falha ao atualizar cliente."
-                    );
+                    dao.atualizarClienteInterativo(input, idUpd);
                 }
-                case 4 -> {  // Listar
+                case 4 -> {
                     List<Cliente> todos = dao.listarClientes();
                     dao.imprimirClientes(todos);
                 }
                 case 5 -> System.out.println("Saindo...");
-
-                case 6 ->  TesteConexao.testarConexao();
-
+                case 6 -> TesteConexao.testarConexao();
                 default -> System.out.println("Opção inválida...");
             }
 
-        }while (opt != 5);
+        } while (opt != 5);
+
+        input.close();
     }
 
-    private static Cliente lerCliente(Scanner input) {
-        Cliente c = new Cliente();
-        System.out.print("Nome completo: ");
-        c.setNomeCompleto(input.nextLine());
-        System.out.print("CPF (11 dígitos): ");
-        c.setCpf(input.nextLine());
-        System.out.print("Data de nascimento (AAAA-MM-DD): ");
-        c.setDataNascimento(Date.valueOf(input.nextLine()));  // funciona agora
-        System.out.print("Email: ");
-        c.setEmail(input.nextLine());
-        System.out.print("Telefone: ");
-        c.setTelefone(input.nextLine());
-        return c;
+    private static Cliente lerCliente(Scanner input, ClienteDAO dao) {
+        String nome = ValidadorInput.lerNome(input);
+        String cpf = ValidadorInput.lerCpf(input, dao);
+        java.sql.Date dataNascimento = ValidadorInput.lerData(input);
+        String email = ValidadorInput.lerEmail(input);
+        String telefone = ValidadorInput.lerTelefone(input);
+
+        return new Cliente(nome, cpf, dataNascimento, email, telefone);
     }
 }

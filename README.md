@@ -10,7 +10,7 @@ Sistema acadêmico desenvolvido para informatizar o processo de **cadastro de cl
   RA: 972515409  
   Curso: Análise e Desenvolvimento de Sistemas
 
-- **David Lucas Gonçalves Santos**  
+- **Davi Lucas Gonçalves Santos**  
   RA: 972515322  
   Curso: Ciência da Computação
 

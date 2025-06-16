@@ -29,19 +29,18 @@ Sistema acadêmico desenvolvido para informatizar o processo de **cadastro de cl
 
 ---
 
-## 📂 Estrutura de Arquivos
+```## 📂 Estrutura de Arquivos```
 
 src/
 └── com/
-    └── seuprojeto/
-        ├── Cliente.java          # Entidade Cliente (modelo dos dados)
-        ├── ClienteDAO.java       # Operações de banco (CRUD)
-        ├── ClienteService.java   # Lógica de negócio
-        ├── ConexaoBD.java        # Classe de conexão com banco MySQL
-        ├── Main.java             # Classe principal com interface Swing
-        ├── TesteConexao.java     # Teste simples da conexão JDBC
-        └── ValidadorInput.java   # Validação de entradas do usuário
-
+└── seuprojeto/
+├── Cliente.java # Entidade Cliente (modelo dos dados)
+├── ClienteDAO.java # Operações de banco (CRUD)
+├── ClienteService.java # Lógica de negócio
+├── ConexaoBD.java # Classe de conexão com banco MySQL
+├── Main.java # Classe principal com interface Swing
+├── TesteConexao.java # Teste simples da conexão JDBC
+└── ValidadorInput.java # Validação de entradas do usuário
 
 
 ---

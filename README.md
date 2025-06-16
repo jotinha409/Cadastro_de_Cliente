@@ -1,6 +1,6 @@
 ```# 📋 Sistema de Cadastro Digital – Space Wellness (v0.3)```
 
-Sistema acadêmico desenvolvido para informatizar o processo de **cadastro de clientes** da clínica fictícia *SPA Space Wellness*, substituindo fichas de papel por uma aplicação Java integrada a banco de dados.
+Sistema acadêmico desenvolvido para informatizar o processo de **cadastro de clientes** da clínica *SPA Space Wellness*, substituindo fichas de papel por uma aplicação Java integrada a banco de dados.
 
 ---
 

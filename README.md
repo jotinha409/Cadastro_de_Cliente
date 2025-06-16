@@ -71,7 +71,7 @@ src/
 
 1. Clone o projeto:
 ```bash
-git clone https://github.com/seuusuario/seurepositorio
+git clone https://github.com/jotinha409/Cadastro_de_Cliente.git
 
 -- Cria o banco de dados, se não existir
 CREATE DATABASE IF NOT EXISTS sistema_clientes;

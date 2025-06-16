@@ -33,6 +33,11 @@ public class ClienteDAO {
 
             stmt.setString(5, cliente.getTelefone());
 
+            if (emailExiste(cliente.getEmail())) {
+                System.out.println("E-mail já cadastrado.");
+                return false;
+            }
+
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -41,6 +46,20 @@ public class ClienteDAO {
         }
     }
 
+    public boolean emailExiste(String email) {
+        String sql = "SELECT id FROM clientes WHERE email = ?";
+        try (Connection conn = ConexaoBD.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // true se encontrou
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao verificar existência do e-mail: " + email, e);
+            return false;
+        }
+    }
 
     public boolean removerCliente(int id) {
         String sql = "DELETE FROM clientes WHERE id = ?";
@@ -154,65 +173,97 @@ public class ClienteDAO {
         System.out.println("\nAtualizando cliente: " + cliente.getNomeCompleto());
         System.out.println("Para manter o campo atual, pressione ENTER sem digitar nada.");
 
-        System.out.print("Nome (" + cliente.getNomeCompleto() + "): ");
-        String nome = input.nextLine().trim();
-        if (!nome.isEmpty()) {
-            if (ValidadorInput.isNomeValido(nome)) {
-                cliente.setNomeCompleto(nome);
-            } else {
-                System.out.println("Nome inválido. Mantendo valor atual.");
-            }
-        }
+        // Atualiza nome
+        String nome = lerNomeValido(input, cliente.getNomeCompleto());
+        cliente.setNomeCompleto(nome);
 
-        System.out.print("CPF (" + cliente.getCpf() + "): ");
-        String cpf = input.nextLine().replaceAll("\\D", "");
-        if (!cpf.isEmpty()) {
-            if (ValidadorInput.isCpfValido(cpf)) {
-                if (!cpf.equals(cliente.getCpf()) && cpfExiste(cpf)) {
-                    System.out.println("CPF já cadastrado. Mantendo valor atual.");
-                } else {
-                    cliente.setCpf(cpf);
-                }
-            } else {
-                System.out.println("CPF inválido. Mantendo valor atual.");
-            }
-        }
+        // Atualiza CPF
+        String cpf = lerCpfValido(input, cliente.getCpf());
+        cliente.setCpf(cpf);
 
-        System.out.print("Data de nascimento (" + (cliente.getDataNascimento() != null ? cliente.getDataNascimento().toString() : "vazio") + "): ");
-        String dataStr = input.nextLine().trim();
-        if (!dataStr.isEmpty()) {
-            java.sql.Date novaData = ValidadorInput.parseData(dataStr);
-            if (novaData != null) {
-                cliente.setDataNascimento(novaData);
-            } else {
-                System.out.println("Data inválida. Mantendo valor atual.");
-            }
-        }
+        // Atualiza data de nascimento
+        java.sql.Date dataNascimento = lerDataValida(input, cliente.getDataNascimento());
+        cliente.setDataNascimento(dataNascimento);
 
-        System.out.print("Email (" + (cliente.getEmail() != null ? cliente.getEmail() : "vazio") + "): ");
-        String email = input.nextLine().trim();
-        if (!email.isEmpty()) {
-            if (ValidadorInput.isEmailValido(email)) {
-                cliente.setEmail(email);
-            } else {
-                System.out.println("Email inválido. Mantendo valor atual.");
-            }
-        }
+        // Atualiza email
+        String email = lerEmailValido(input, cliente.getEmail());
+        cliente.setEmail(email);
 
-        System.out.print("Telefone (" + cliente.getTelefone() + "): ");
-        String telefone = input.nextLine().replaceAll("\\D", "");
-        if (!telefone.isEmpty()) {
-            if (ValidadorInput.isTelefoneValido(telefone)) {
-                cliente.setTelefone(telefone);
-            } else {
-                System.out.println("Telefone inválido. Mantendo valor atual.");
-            }
-        }
+        // Atualiza telefone
+        String telefone = lerTelefoneValido(input, cliente.getTelefone());
+        cliente.setTelefone(telefone);
 
         if (atualizarCliente(cliente)) {
             System.out.println("✔ Cliente atualizado com sucesso!");
         } else {
             System.out.println("✖ Erro ao atualizar cliente.");
+        }
+    }
+
+    // Métodos auxiliares para validação interativa
+
+    private String lerNomeValido(Scanner input, String valorAtual) {
+        while (true) {
+            System.out.print("Nome (" + valorAtual + "): ");
+            String entrada = input.nextLine().trim();
+            if (entrada.isEmpty()) return valorAtual;
+            if (ValidadorInput.isNomeValido(entrada)) return entrada;
+            System.out.println("Nome inválido! Tente novamente.");
+        }
+    }
+
+    private String lerCpfValido(Scanner input, String valorAtual) {
+        while (true) {
+            System.out.print("CPF (" + valorAtual + "): ");
+            String entrada = input.nextLine().replaceAll("\\D", "");
+            if (entrada.isEmpty()) return valorAtual;
+            if (!ValidadorInput.isCpfValido(entrada)) {
+                System.out.println("CPF inválido! Deve conter 11 dígitos. Tente novamente.");
+                continue;
+            }
+            if (!entrada.equals(valorAtual) && cpfExiste(entrada)) {
+                System.out.println("CPF já cadastrado. Tente outro.");
+                continue;
+            }
+            return entrada;
+        }
+    }
+
+    private java.sql.Date lerDataValida(Scanner input, java.sql.Date valorAtual) {
+        while (true) {
+            System.out.print("Data de nascimento (" + (valorAtual != null ? valorAtual.toString() : "vazio") + "): ");
+            String entrada = input.nextLine().trim();
+            if (entrada.isEmpty()) return valorAtual;
+            java.sql.Date data = ValidadorInput.parseData(entrada);
+            if (data != null) return data;
+            System.out.println("Data inválida! Use formato YYYY-MM-DD. Tente novamente.");
+        }
+    }
+
+    private String lerEmailValido(Scanner input, String valorAtual) {
+        while (true) {
+            System.out.print("Email (" + (valorAtual != null ? valorAtual : "vazio") + "): ");
+            String entrada = input.nextLine().trim();
+            if (entrada.isEmpty()) return valorAtual;
+            if (!ValidadorInput.isEmailValido(entrada)) {
+                System.out.println("Email inválido! Tente novamente.");
+                continue;
+            }
+            if (!entrada.equals(valorAtual) && emailExiste(entrada)) {
+                System.out.println("Email já cadastrado. Tente outro.");
+                continue;
+            }
+            return entrada;
+        }
+    }
+
+    private String lerTelefoneValido(Scanner input, String valorAtual) {
+        while (true) {
+            System.out.print("Telefone (" + valorAtual + "): ");
+            String entrada = input.nextLine().replaceAll("\\D", "");
+            if (entrada.isEmpty()) return valorAtual;
+            if (ValidadorInput.isTelefoneValido(entrada)) return entrada;
+            System.out.println("Telefone inválido! Deve conter apenas números, entre 8 e 13 dígitos. Tente novamente.");
         }
     }
 

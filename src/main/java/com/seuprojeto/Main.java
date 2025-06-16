@@ -77,7 +77,7 @@ public class Main {
         String nome = ValidadorInput.lerNome(input);
         String cpf = ValidadorInput.lerCpf(input, dao);
         java.sql.Date dataNascimento = ValidadorInput.lerData(input);
-        String email = ValidadorInput.lerEmail(input);
+        String email = ValidadorInput.lerEmail(input, dao); // CORRIGIDO AQUI
         String telefone = ValidadorInput.lerTelefone(input);
 
         return new Cliente(nome, cpf, dataNascimento, email, telefone);

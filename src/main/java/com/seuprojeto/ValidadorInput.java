@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.Period;
 
 public class ValidadorInput {
 
@@ -46,7 +47,6 @@ public class ValidadorInput {
         }
     }
 
-    // Leitura de CPF, checando duplicidade via DAO
     public static String lerCpf(Scanner input, ClienteDAO dao) {
         while (true) {
             System.out.print("CPF (11 dígitos, somente números): ");
@@ -63,7 +63,8 @@ public class ValidadorInput {
         }
     }
 
-    // Leitura de data, tentando formatos comuns
+
+    // Leitura de CPF, checando duplicidade via DAO
     public static java.sql.Date lerData(Scanner input) {
         String[] formatos = { "dd-MM-yyyy", "dd/MM/yyyy", "ddMMyyyy" };
 
@@ -85,13 +86,39 @@ public class ValidadorInput {
                 try {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formato);
                     LocalDate localDate = LocalDate.parse(dataStr, formatter);
+
+                    LocalDate hoje = LocalDate.now();
+
+                    if (localDate.isAfter(hoje)) {
+                        System.out.println("Data não pode ser futura. Tente novamente.");
+                        break;
+                    }
+
+                    int idade = calcularIdade(localDate, hoje);
+                    System.out.println("Idade calculada: " + idade + " anos.");
+                    if (idade < 18) {
+                        System.out.println("⚠ Atenção: menor de idade.");
+                    } else {
+                        System.out.println("Maior de idade.");
+                    }
+
                     return java.sql.Date.valueOf(localDate);
+
                 } catch (Exception e) {
                     // tenta próximo formato
                 }
             }
 
             System.out.println("Formato inválido! Use DD-MM-AAAA, DD/MM/AAAA ou DDMMAAAA. Tente novamente.");
+        }
+    }
+
+
+    private static int calcularIdade(LocalDate dataNascimento, LocalDate dataAtual) {
+        if ((dataNascimento != null) && (dataAtual != null)) {
+            return Period.between(dataNascimento, dataAtual).getYears();
+        } else {
+            return 0;
         }
     }
 

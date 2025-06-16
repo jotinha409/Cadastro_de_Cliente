@@ -87,15 +87,3 @@ CREATE TABLE clientes (
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
-  ```## 📄 Licença```
-Projeto com finalidade exclusivamente acadêmica.
-
- ``` ## 👨‍🏫 Professores e Avaliadores```
-Este projeto foi desenvolvido como parte da disciplina de Programação Orientada a Objetos e visa aplicar conceitos de modelagem, persistência de dados e interface gráfica.
-
-  ```## 📁 Extras incluídos```
-schema.sql com a criação da tabela
-Diagramas UML de classes e casos de uso
-Wireframes
-Manual simplificado de uso

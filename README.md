@@ -89,5 +89,7 @@ CREATE TABLE IF NOT EXISTS clientes (
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+```
 
+```
 https://www.canva.com/design/DAGqjaf5bRE/omUhM-u1VUFtHeew1bwD8A/edit?utm_content=DAGqjaf5bRE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
